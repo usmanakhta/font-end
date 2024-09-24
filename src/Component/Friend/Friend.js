@@ -9,10 +9,11 @@ function Friend() {
   const navigate = useNavigate();
   return (
     <>
-      <div className="h-[90vh] w-full bg-[#0c0c20]">
-
-      <IoIosArrowBack className="text-white text-[40px] py-2" onClick={()=> navigate("/home", {state:{}})}/>
-
+      <div className="h-[90vh] w-full bg-[#0c0c20f7]">
+        <IoIosArrowBack
+          className="text-white text-[40px] py-2"
+          onClick={() => navigate("/home", { state: {} })}
+        />
 
         <p className="text-white text-2xl font-semibold text-center py-3">
           Invite friends!
@@ -60,8 +61,7 @@ function Friend() {
           <button className="text-white text-lg font-medium w-[250px] h-[60px] border rounded-lg hover: bg-[#171725] mt-[180px] ">
             Invite a friend
           </button>
-          <MdContentCopy className="text-white text-lg bg-[#171725] border rounded-lg w-[80px] mt-[180px] p-3 h-[60px]" />
-
+          <MdContentCopy className="text-white text-lg bg-[#171725f6] border rounded-lg w-[80px] mt-[180px] p-3 h-[60px]" />
         </div>
       </div>
     </>

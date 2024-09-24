@@ -18,14 +18,19 @@ function DailyCombo() {
   } = useDailyRewardHook();
   const [showCard, setShowCard] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
-
+  const [singleCard, setSingleCard] = useState({});
+  const [deductAmount, setDeductAmout] = useState(null);
   const openModal = (id) => {
     const findRedeem = redeemReward.find((item) => item.id === id).level;
-
-    if (reward > 1000 && findRedeem > 1) {
-      setShowCard(true);
-      setSelectedId(id);
-    }
+    const findSpecific = redeemReward.find((item) => item.id === id);
+    const findDeduction = redeemReward.find(
+      (item) => item.id === id
+    ).deductAmount;
+    const deductSpecificAmount = findDeduction * 1000;
+    setDeductAmout(deductSpecificAmount);
+    setSingleCard(findSpecific);
+    setShowCard(true);
+    setSelectedId(id);
   };
 
   const triggerRedeem = () => {
@@ -40,7 +45,10 @@ function DailyCombo() {
   return (
     <>
       <div className="h-[88vh] w-full bg-[#0c0c1d] overflow-hidden overflow-y-auto">
-      <IoIosArrowBack className="text-white text-2xl my-2" onClick={()=> navigate("/home", {state:{}})}/>
+        <IoIosArrowBack
+          className="text-white text-2xl my-2"
+          onClick={() => navigate("/home", { state: {} })}
+        />
         <div className="flex flex-col w-full gap-6 ">
           <div className="flex bg-[#26263a] justify-between items-center w-[95%] mx-auto p-1.5 px-2 rounded-lg">
             <p className="text-white font-semibold">Daily combo</p>
@@ -114,7 +122,7 @@ function DailyCombo() {
               Specials
             </div>
           </div>
-      
+
           <div className="grid grid-cols-2 gap-2 w-[95%] mx-auto">
             {redeemReward?.map((item) => {
               const { id, title, image, price, level, deductAmount } = item;
@@ -168,24 +176,34 @@ function DailyCombo() {
                     alt=""
                     className="h-[100px] w-[100px] m-auto my-2"
                   />
-                  <p className="text-2xl text-center">CEO</p>
-                  <p className="text-center">
-                    Develop your management skills as a company founder.Improve
-                    your leadership skills.
-                  </p>
-                  <p className="text-center text-lg my-2">Profit per hour</p>
-                  <div className="flex gap-1 justify-center items-center mb-1">
-                    <CiBitcoin className="text-[22px] bg-[#e9a830] rounded-full" />
-                    <p>90</p>
-                  </div>
-                  <button
-                    className=" bg-yellow-500 px-6 py-2 rounded-lg text-white font-bold ms-[100px]"
-                    onClick={triggerRedeem}
-                  >
-                    Redeem Selected
-                  </button>
+                  {reward > deductAmount ? (
+                    <>
+                      <p className="text-2xl text-center">{singleCard.title}</p>
+                      <p className="text-center">
+                        Develop your management skills as a company
+                        founder.Improve your leadership skills.
+                      </p>
+                      <p className="text-center text-lg my-2">
+                        Profit per hour
+                      </p>
+                      <div className="flex gap-1 justify-center items-center mb-1">
+                        <CiBitcoin className="text-[22px] bg-[#e9a830] rounded-full" />
+                        <p>{singleCard.price}</p>
+                      </div>
+                      <button
+                        className=" bg-yellow-500 px-6 py-2 rounded-lg text-white font-bold ms-[100px]"
+                        onClick={triggerRedeem}
+                      >
+                        Redeem Selected
+                      </button>
+                    </>
+                  ) : (
+                    <h1 className="text-2xl text-center mx-12">
+                      Amount is lower You should have {deductAmount}
+                    </h1>
+                  )}
                 </div>
-              </div> 
+              </div>
             )}
           </div>
         </div>
